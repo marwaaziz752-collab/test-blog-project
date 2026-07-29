@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+// Fetch and sort all blog posts by publication date (newest first)
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout
+  title="Our Blog | AstroSphere"
+  description="Explore articles on Astro, Tailwind CSS, modern UI/UX design patterns, and decoupled content management workflows."
+>
+  <!-- Page Header -->
+  <section class="bg-white border-b border-slate-100 py-16 sm:py-24 relative overflow-hidden">
+    <!-- Glowing blob -->
+    <div class="absolute -top-32 right-10 h-72 w-72 bg-indigo-50/70 rounded-full blur-2xl -z-10"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+        The AstroSphere <span class="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Blog</span>
+      </h1>
+      <p class="text-slate-600 text-lg sm:text-xl max-w-2xl mx-auto font-medium">
+        Insightful articles, guides, and stories from our team of passionate designers, developers, and CMS enthusiasts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Blog Listing Grid Section -->
+  <section class="py-16 sm:py-24 bg-slate-50/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      {sortedPosts.length === 0 ? (
+        <div class="text-center py-20 bg-white rounded-3xl border border-slate-100">
+          <p class="text-slate-500 font-medium text-lg">No blog posts found. Check back later!</p>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              author={post.data.author}
+              pubDate={post.data.pubDate}
+              image={post.data.image}
+              tags={post.data.tags}
+              description={post.data.description}
+              slug={post.id}
+            />
+          ))}
+        </div>
+      )}
+
+    </div>
+  </section>
+</Layout>

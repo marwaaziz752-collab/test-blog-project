@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import LatestPosts from '../components/LatestPosts.astro';
+import CTA from '../components/CTA.astro';
+---
+
+<Layout
+  title="AstroSphere | High-Performance Modern Landing Page & Blog"
+  description="Welcome to AstroSphere, a responsive, beautiful landing page and blog website built using Astro and Tailwind CSS. CMS compatible and clean."
+>
+  <!-- Hero Section -->
+  <Hero
+    title="Build Lightning Fast Websites with Astro"
+    tagline="Discover the Future of the Web"
+    description="A modern, responsive, and CMS-ready static site template crafted for developers, writers, and content creators. High performance made incredibly simple."
+    ctaText="Get Started"
+    ctaLink="/blog"
+  />
+
+  <!-- Features Section -->
+  <section class="py-20 sm:py-28 bg-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Features Header -->
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <h2 class="text-xs font-bold tracking-widest text-indigo-600 uppercase">
+          Key Advantages
+        </h2>
+        <p class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+          Everything You Need to Succeed
+        </p>
+        <p class="text-slate-600 font-medium">
+          AstroSphere is built from the ground up to provide developer convenience, stellar speed, and user engagement.
+        </p>
+      </div>
+
+      <!-- Features Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <FeatureCard
+          title="Stellar Performance"
+          description="Astro renders your pages to zero-JavaScript static HTML by default, leading to perfect Core Web Vitals and lightning fast load times."
+          icon="speed"
+        />
+        <FeatureCard
+          title="Flexible Architecture"
+          description="Bring your favorite frontend UI frameworks like React, Vue, Svelte, or Tailwind CSS and mix them seamlessly on the same page."
+          icon="flexible"
+        />
+        <FeatureCard
+          title="Pages CMS Ready"
+          description="Decoupled content collections utilizing schema-validated Markdown files. Seamlessly hand off content editing to non-technical users."
+          icon="cms"
+        />
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-20 sm:py-28 bg-slate-50 border-t border-slate-100 relative overflow-hidden">
+    <!-- Background styling element -->
+    <div class="absolute right-0 top-1/2 -translate-y-1/2 h-96 w-96 bg-indigo-100/30 rounded-full blur-3xl -z-10"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+        <!-- About Image Placeholder / Decorative Box -->
+        <div class="relative group">
+          <div class="absolute inset-0 bg-gradient-to-tr from-indigo-600 to-violet-600 rounded-3xl rotate-3 scale-95 opacity-10 group-hover:rotate-1 group-hover:scale-100 transition-all duration-300"></div>
+          <div class="relative bg-white border border-slate-200/80 p-8 sm:p-10 rounded-3xl shadow-lg space-y-6">
+            <div class="flex items-center gap-4">
+              <span class="p-3 rounded-2xl bg-indigo-50 text-indigo-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-.11-8.203-.318m16.406 0a9.003 9.003 0 01-4.223 5.793M4.197 10.182a9.003 9.003 0 004.222 5.793" />
+                </svg>
+              </span>
+              <h4 class="text-xl font-extrabold text-slate-900">Empowering Web Creators</h4>
+            </div>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              We design digital experiences that focus on accessibility, modern aesthetics, and performance optimization. By bridging the gap between developers and editors, we craft cohesive platforms that grow over time.
+            </p>
+            <div class="border-t border-slate-100 pt-6 flex items-center justify-between text-xs font-bold text-indigo-600 uppercase tracking-widest">
+              <span>99+ PageSpeed Score</span>
+              <span>100% SEO Friendly</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Text Details -->
+        <div class="space-y-6 sm:space-y-8">
+          <div class="space-y-3.5">
+            <h2 class="text-xs font-bold tracking-widest text-indigo-600 uppercase">
+              Who We Are
+            </h2>
+            <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+              Introducing AstroSphere: The Ultimate Front-End Foundation
+            </h3>
+          </div>
+
+          <p class="text-slate-600 leading-relaxed font-medium">
+            AstroSphere is a starter template designed for developers seeking the perfect blend of raw speed, clean code, and CMS-ready flexibility. By integrating Astro's cutting-edge Static Site Generation (SSG) with Tailwind CSS utilities, we provide a blueprint that is incredibly easy to understand and simple to extend.
+          </p>
+
+          <p class="text-slate-600 leading-relaxed">
+            Our priority is to maintain clean code patterns that align with modern web architecture requirements. With full Markdown support via Content Collections, you can easily configure this repository to connect with any Git-based content editor later, such as Pages CMS, without touching a single line of backend database setup.
+          </p>
+
+          <div class="pt-2">
+            <a
+              href="/blog"
+              class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-100 hover:shadow-indigo-200 transition-all duration-200"
+            >
+              Explore Our Insights
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Blog Posts Section -->
+  <LatestPosts />
+
+  <!-- CTA Section -->
+  <CTA />
+</Layout>

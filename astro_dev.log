@@ -1,0 +1,15 @@
+15:27:44 [vite] connected.
+15:27:46 [types] Generated 1ms
+15:27:46 [vite] connected.
+15:27:47 [content] Syncing content
+15:27:47 [content] Synced content
+15:27:47 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v7.1.6 ready in 3468 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+15:27:47 watching for file changes...
+15:27:58 [200] HEAD / 191ms
+15:29:05 [200] / 42ms
+15:29:28 [200] / 6ms
+15:29:30 [200] /blog 44ms
+15:29:32 [200] /blog/why-cms-matters 54ms
