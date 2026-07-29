@@ -1,5 +1,6 @@
 ---
 title: "Getting Started with Astro and Tailwind CSS"
+slug: getting-started-with-astro
 author: "Sarah Connor"
 pubDate: 2025-02-15
 image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop"

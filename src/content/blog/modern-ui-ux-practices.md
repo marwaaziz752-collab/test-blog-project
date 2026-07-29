@@ -1,5 +1,6 @@
 ---
 title: "The Ultimate Guide to Modern UI/UX Practices"
+slug: modern-ui-ux-practices
 author: "Alex Rivera"
 pubDate: 2025-02-18
 image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=600&auto=format&fit=crop"
