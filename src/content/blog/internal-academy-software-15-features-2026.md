@@ -1,5 +1,5 @@
 ---
-title: "Internal Academy Software: 15 Must-Have Features in 2026 age"
+title: "Internal Academy Software: 15 Must-Have Features in 2026"
 slug: internal-academy-software-15-features-2026
 author: Hifza Naeem
 pubDate: 2026-07-30
