@@ -1,16 +1,13 @@
 ---
-title: Why Content Management Systems (CMS) Matter for Modern Sites in tech
+title: "Why Content Management Systems (CMS) Matter for Modern Sites"
 slug: why-cms-matters
-author: Marcus Chen
+author: "Marcus Chen"
 pubDate: 2025-02-20
-image: https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop
-tags:
-  - CMS
-  - Astro
-  - Workflow
-description: Understand how content management systems empower content creators
-  and simplify developer workflows.
+image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop"
+tags: ["CMS", "Astro", "Workflow"]
+description: "Understand how content management systems empower content creators and simplify developer workflows."
 ---
+
 As developers, we love writing code and editing Markdown files in our IDEs. But for content writers, marketers, and clients, accessing a Git repository to edit a typo is daunting and risky. This is where Content Management Systems (CMS) come in.
 
 In this article, we'll explain how decoupling your CMS from your front-end code with modern tools like Pages CMS offers the best of both worlds.
@@ -18,7 +15,6 @@ In this article, we'll explain how decoupling your CMS from your front-end code 
 ## The Problem with Static Frontmatter
 
 When you build a portfolio or blog for a client, you might start by hardcoding articles directly in Astro pages or updating Markdown files manually. While simple for a small project, this approach has limits:
-
 - Non-technical authors cannot publish content easily.
 - High risk of breaking layout configurations or Frontmatter structures.
 - Slower publishing velocity.
@@ -36,7 +32,6 @@ Benefits of Git-based CMS include:
 ## Preparing Your Astro Project for Pages CMS
 
 To ensure compatibility, you simply need to structure your project correctly:
-
 - Maintain your posts in defined folders, e.g., `src/content/blog/`.
 - Use a flat frontmatter structure (like `title`, `author`, `pubDate`, `image`, etc.) that is simple to configure in a CMS configuration file.
 - Avoid hardcoding dynamic text in your visual layout templates.
