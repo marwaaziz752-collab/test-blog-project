@@ -42,7 +42,7 @@ Quizzes are not just for testing knowledge. They also break up passive video wat
 
 ### **5. Personalise the Learning Path**
 
-Not every student needs the same journey. By offering optional tracks or bonus modules, you allow learners to choose content that fits their goals. This personal touch often mirrors strategies used in employee training, similar to what we cover in [++LMS user adoption and 15 proven ways to increase employee engagement++](https://theeduassist.com/blog/lms-user-adoption-15-proven-ways-to-increase-employee-engagement/).
+Not every student needs the same journey. By offering optional tracks or bonus modules, you allow learners to choose content that fits their goals. This personal touch often mirrors strategies used in employee training, similar to what we cover in ++[LMS user adoption and 15 proven ways to increase employee engagement](https://theeduassist.com/blog/lms-user-adoption-15-proven-ways-to-increase-employee-engagement/)++.
 
 ### **6. Send Automated Reminder Emails**
 
@@ -74,7 +74,7 @@ Worksheets, checklists, and templates give learners something practical to use o
 
 ### **13. Track Data and Learning Analytics**
 
-You cannot improve what you do not measure. Thinkific provides analytics on lesson completion and drop off points, and pairing this with a deeper measurement approach, similar to the framework in our [++corporate training ROI calculator guide++](https://theeduassist.com/blog/corporate-training-roi-calculator-measuring-learning-effectiveness/), helps you understand exactly where learners lose interest.
+You cannot improve what you do not measure. Thinkific provides analytics on lesson completion and drop off points, and pairing this with a deeper measurement approach, similar to the framework in our ++[corporate training ROI calculator guide](https://theeduassist.com/blog/corporate-training-roi-calculator-measuring-learning-effectiveness/)++, helps you understand exactly where learners lose interest.
 
 ### **14. Segment Students by Behavior**
 
@@ -82,7 +82,7 @@ Not all students behave the same way. Some finish quickly, while others need ext
 
 ### **15. Integrate Thinkific With Other Tools**
 
-A smooth tech stack removes friction for both students and instructors. Connecting Thinkific with CRM, email, and collaboration tools creates a seamless experience, much like the strategies explained in our [++LMS integration guide for HRIS, CRM, and collaboration tools++](https://theeduassist.com/blog/lms-integration-guide-hris-crm-collaboration-tools/).
+A smooth tech stack removes friction for both students and instructors. Connecting Thinkific with CRM, email, and collaboration tools creates a seamless experience, much like the strategies explained in our ++[LMS integration guide for HRIS, CRM, and collaboration tools](https://theeduassist.com/blog/lms-integration-guide-hris-crm-collaboration-tools/)++.
 
 ### **16. Use Storytelling in Lessons**
 
@@ -94,21 +94,21 @@ Pairing students together or creating small study groups adds a layer of account
 
 ### **18. Track Learning Data With Modern Standards**
 
-For creators who want deeper insight into learner behavior, using standards like xAPI can unlock detailed tracking beyond simple completion rates. Our article on the [++xAPI Learning Record Store and everything you need to know++](https://theeduassist.com/blog/xapi-learning-record-store-lrs-everything-you-need-to-know-in-2026/) explains how this data can guide better engagement decisions.
+For creators who want deeper insight into learner behavior, using standards like xAPI can unlock detailed tracking beyond simple completion rates. Our article on the ++[xAPI Learning Record Store and everything you need to know](https://theeduassist.com/blog/xapi-learning-record-store-lrs-everything-you-need-to-know-in-2026/)++ explains how this data can guide better engagement decisions.
 
 ### **19. Choose the Right Content Format**
 
-Some content works better as SCORM packages, while other content fits naturally into native Thinkific lessons. Understanding the difference, as outlined in our comparison of [++xAPI versus SCORM and the best LMS choices++](https://theeduassist.com/blog/xapi-vs-scorm-best-lms-in-2026/), helps creators choose formats that keep learners engaged rather than overwhelmed.
+Some content works better as SCORM packages, while other content fits naturally into native Thinkific lessons. Understanding the difference, as outlined in our comparison of ++[xAPI versus SCORM and the best LMS choices](https://theeduassist.com/blog/xapi-vs-scorm-best-lms-in-2026/)++, helps creators choose formats that keep learners engaged rather than overwhelmed.
 
 ### **20. Simplify Course Creation With No Code Tools**
 
-Finally, reducing friction on the creator's side often improves the final product for students. If building interactive content feels overwhelming, our guide on [++how to create a SCORM course without coding++](https://theeduassist.com/blog/how-to-create-a-scorm-course-without-coding/) shows how to produce polished lessons without technical skills.
+Finally, reducing friction on the creator's side often improves the final product for students. If building interactive content feels overwhelming, our guide on ++[how to create a SCORM course without coding](https://theeduassist.com/blog/how-to-create-a-scorm-course-without-coding/)++ shows how to produce polished lessons without technical skills.
 
 ## **Bringing It All Together**
 
 Improving Thinkific student engagement is not about applying one single trick. Instead, it is about layering small improvements across onboarding, content design, communication, and community. When these elements work together, course completion rates naturally rise.
 
-Many course creators in the USA also compare platforms before deciding where to build their next program. If you are still exploring your options, it may help to understand how Thinkific stacks up against alternatives, since platform choice can directly affect engagement tools and flexibility. For a broader view of platform strategy, our guide on [++LXP versus LMS and which one your business needs++](https://theeduassist.com/blog/lxp-vs-lms-which-one-does-your-business-need-in-2026/) offers useful context for anyone rethinking their learning technology stack.
+Many course creators in the USA also compare platforms before deciding where to build their next program. If you are still exploring your options, it may help to understand how Thinkific stacks up against alternatives, since platform choice can directly affect engagement tools and flexibility. For a broader view of platform strategy, our guide on ++[LXP versus LMS and which one your business needs](https://theeduassist.com/blog/lxp-vs-lms-which-one-does-your-business-need-in-2026/)++ offers useful context for anyone rethinking their learning technology stack.
 
 ## **Frequently Asked Questions**
 
