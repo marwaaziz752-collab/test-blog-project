@@ -33,13 +33,15 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {noindex !== undefined ? (
-      noindex && <meta name="robots" content="noindex" />
+    {noindex === true ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : noindex === false ? (
+      <meta name="robots" content="index, follow" />
     ) : (
       <meta name="robots" content="noindex, nofollow" />
     )}
     {canonical && <link rel="canonical" href={canonical} />}
-    {hreflang && <link rel="alternate" hreflang={hreflang} href={canonical} />}
+    {hreflang && canonical && <link rel="alternate" hreflang={hreflang} href={canonical} />}
     {focusKeyword && <meta name="focus-keyword" content={focusKeyword} />}
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 
