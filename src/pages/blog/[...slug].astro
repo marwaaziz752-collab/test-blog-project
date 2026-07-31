@@ -41,13 +41,132 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
+
+// 4. Canonical URL Calculation
+const canonicalUrl = `https://theeduassist.com/blog/${post.id}/`;
+
+// 5. Build-Time SEO Score Feature Calculation
+function calculateSeoScore(post, headings) {
+  let score = 0;
+  const audit = {};
+
+  // Factor 1: Custom SEO Meta Title
+  const hasMetaTitle = post.data.metaTitle && post.data.metaTitle.trim().length > 0;
+  if (hasMetaTitle) {
+    score += 15;
+    audit.metaTitle = "PASSED (15/15)";
+  } else {
+    audit.metaTitle = "FAILED (0/15)";
+  }
+
+  // Factor 2: Custom SEO Meta Description
+  const hasMetaDesc = post.data.metaDescription && post.data.metaDescription.trim().length > 0;
+  if (hasMetaDesc) {
+    score += 15;
+    audit.metaDescription = "PASSED (15/15)";
+  } else {
+    audit.metaDescription = "FAILED (0/15)";
+  }
+
+  // Factor 3: Word Count Score
+  if (wordCount > 1000) {
+    score += 15;
+    audit.wordCount = `PASSED (>1000 words: ${wordCount}) (15/15)`;
+  } else if (wordCount > 500) {
+    score += 10;
+    audit.wordCount = `PARTIAL (>500 words: ${wordCount}) (10/15)`;
+  } else if (wordCount > 200) {
+    score += 5;
+    audit.wordCount = `PARTIAL (>200 words: ${wordCount}) (5/15)`;
+  } else {
+    audit.wordCount = `FAILED (<200 words: ${wordCount}) (0/15)`;
+  }
+
+  // Factor 4: Hero Image Availability
+  const hasHeroImage = post.data.image && post.data.image !== '/images/blog-placeholder.jpg';
+  if (hasHeroImage) {
+    score += 10;
+    audit.heroImage = "PASSED (10/10)";
+  } else {
+    audit.heroImage = "FAILED (0/10)";
+  }
+
+  // Factor 5: Proper Heading Structure (at least one H2 and no depth skips of >1)
+  const hasH2 = headings.some(h => h.depth === 2);
+  let headingJump = false;
+  for (let i = 1; i < headings.length; i++) {
+    if (headings[i].depth - headings[i - 1].depth > 1) {
+      headingJump = true;
+    }
+  }
+  if (headings.length > 0 && hasH2 && !headingJump) {
+    score += 15;
+    audit.headingStructure = "PASSED (15/15)";
+  } else if (headings.length > 0) {
+    score += 10;
+    audit.headingStructure = "PARTIAL (Has headings but missing H2 or contains depth jumps) (10/15)";
+  } else {
+    audit.headingStructure = "FAILED (No headings) (0/15)";
+  }
+
+  // Factor 6: Internal Links Presence (links containing domain or relative paths)
+  const bodyText = post.body || "";
+  const hasInternalLinks = bodyText.includes("theeduassist.com") || bodyText.includes("]((/") || bodyText.includes("](//") || bodyText.includes("](/blog");
+  if (hasInternalLinks) {
+    score += 10;
+    audit.internalLinks = "PASSED (10/10)";
+  } else {
+    audit.internalLinks = "FAILED (0/10)";
+  }
+
+  // Factor 7: Image Alt Text Completeness (deduct if any image lacks alt text)
+  const imgRegex = /!\[(.*?)\]\((.*?)\)/g;
+  let match;
+  let totalImages = 0;
+  let imagesWithAlt = 0;
+  while ((match = imgRegex.exec(bodyText)) !== null) {
+    totalImages++;
+    if (match[1] && match[1].trim().length > 0) {
+      imagesWithAlt++;
+    }
+  }
+  if (totalImages === 0 || totalImages === imagesWithAlt) {
+    score += 10;
+    audit.altText = `PASSED (${imagesWithAlt}/${totalImages} images have alt text) (10/10)`;
+  } else {
+    audit.altText = `FAILED (Only ${imagesWithAlt}/${totalImages} images have alt text) (0/10)`;
+  }
+
+  // Factor 8: Canonical URL Availability (always generated for layout)
+  score += 10;
+  audit.canonical = "PASSED (10/10)";
+
+  return { score, audit };
+}
+
+const seoResult = calculateSeoScore(post, headings);
+const seoScore = seoResult.score;
+
+console.log(`\n========================================`);
+console.log(`SEO Audit Score for "${post.data.title}": ${seoScore}/100`);
+console.log(`----------------------------------------`);
+for (const [key, val] of Object.entries(seoResult.audit)) {
+  console.log(`- ${key}: ${val}`);
+}
+console.log(`========================================\n`);
 ---
 
 <Layout
   title={pageTitle}
   description={pageDescription}
+  canonical={canonicalUrl}
+  focusKeyword={post.data.focusKeyword}
+  ogImage={post.data.ogImage || post.data.image}
+  twitterCard={post.data.twitterCard}
+  noindex={post.data.noindex}
+  hreflang={post.data.hreflang}
 >
-  <article class="bg-white min-h-screen">
+  <article class="bg-white min-h-screen" data-seo-score={seoScore}>
 
     <!-- Hero Header / Post Cover Area -->
     <header class="relative py-16 sm:py-24 bg-slate-50 border-b border-slate-100 overflow-hidden">
@@ -166,7 +285,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
             <Content />
           </div>
 
-          <!-- FAQ Accordion Section -->
+          <!-- FAQ Section (Plain Text) -->
           {post.data.faqs && post.data.faqs.length > 0 && (
             <div class="border-t border-slate-100 pt-10">
               <h2 class="text-2xl font-extrabold text-slate-900 mb-6 flex items-center gap-2.5">
@@ -175,23 +294,52 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
                 </svg>
                 Frequently Asked Questions
               </h2>
-              <div class="space-y-4">
+              <div class="space-y-6">
                 {post.data.faqs.map((faq) => (
-                  <div class="faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden transition-all duration-300">
-                    <button
-                      type="button"
-                      class="faq-trigger flex items-center justify-between w-full p-4 sm:p-5 font-bold text-slate-950 text-sm sm:text-base hover:bg-slate-100 text-left transition-colors duration-200"
-                    >
-                      <span>{faq.question}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                      </svg>
-                    </button>
-                    <div class="faq-content hidden border-t border-slate-100 p-4 sm:p-5 bg-white text-slate-600 text-sm sm:text-base leading-relaxed">
-                      {faq.answer}
-                    </div>
+                  <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-slate-950">{faq.question}</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">{faq.answer}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          <!-- End-of-Blog CTA Section -->
+          {post.data.ctaHeading && (
+            <div class="border-t border-slate-100 pt-10">
+              <div class="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-xl shadow-indigo-950/20 border border-indigo-500/20">
+                <!-- Glowing shapes -->
+                <div class="absolute -top-24 -left-24 h-72 w-72 bg-indigo-500/10 rounded-full blur-3xl -z-10"></div>
+                <div class="absolute -bottom-24 -right-24 h-72 w-72 bg-violet-500/10 rounded-full blur-3xl -z-10"></div>
+
+                <div class="relative z-10 max-w-2xl space-y-6">
+                  <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-white">
+                    {post.data.ctaHeading}
+                  </h2>
+
+                  {post.data.ctaText && (
+                    <p class="text-indigo-200 text-sm sm:text-base leading-relaxed">
+                      {post.data.ctaText}
+                    </p>
+                  )}
+
+                  {post.data.ctaButtonLabel && post.data.ctaButtonUrl && (
+                    <div class="pt-2">
+                      <a
+                        href={post.data.ctaButtonUrl}
+                        target={post.data.ctaButtonUrl.startsWith('http') ? "_blank" : undefined}
+                        rel={post.data.ctaButtonUrl.startsWith('http') ? "noopener noreferrer" : undefined}
+                        class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold text-indigo-950 bg-white hover:bg-slate-100 active:bg-slate-200 transition-all duration-200 shadow-lg shadow-indigo-950/40 transform hover:-translate-y-0.5"
+                      >
+                        {post.data.ctaButtonLabel}
+                        <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
@@ -267,28 +415,6 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       });
     });
   }
-
-  // FAQ Accordion Interaction
-  const faqTriggers = document.querySelectorAll('.faq-trigger');
-  faqTriggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const item = trigger.closest('.faq-accordion-item');
-      if (item) {
-        const content = item.querySelector('.faq-content');
-        const arrow = item.querySelector('.faq-arrow');
-        if (content && arrow) {
-          const isHidden = content.classList.toggle('hidden');
-          if (isHidden) {
-            arrow.classList.remove('rotate-180');
-            item.classList.remove('ring-1', 'ring-indigo-500/20', 'shadow-md');
-          } else {
-            arrow.classList.add('rotate-180');
-            item.classList.add('ring-1', 'ring-indigo-500/20', 'shadow-md');
-          }
-        }
-      }
-    });
-  });
 </script>
 
 <style is:global>
@@ -355,9 +481,5 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     color: inherit;
     padding: 0;
     font-weight: normal;
-  }
-  /* Remove list style bullet decoration if there are nested accordions inside list items */
-  .prose li .faq-accordion-item {
-    margin-left: 0 !important;
   }
 </style>

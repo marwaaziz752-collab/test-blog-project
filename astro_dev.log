@@ -1,13 +1,68 @@
-08:56:30 [vite] connected.
-08:56:31 [types] Generated 1ms
-08:56:31 [vite] connected.
-08:56:32 [content] Syncing content
-08:56:32 [content] Content config changed
-08:56:32 [content] Clearing content store
-08:56:33 [content] Synced content
-08:56:33 [vite] Re-optimizing dependencies because vite config has changed
- astro  v7.1.6 ready in 3598 ms
+
+> app@0.0.1 dev
+> astro dev --port 4321
+
+10:16:04 [vite] connected.
+10:16:06 [types] Generated 1ms
+10:16:06 [vite] connected.
+10:16:07 [content] Syncing content
+10:16:07 [content] Content config changed
+10:16:07 [content] Clearing content store
+10:16:07 [content] Synced content
+10:16:07 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v7.1.6 ready in 3378 ms
 ┃ Local    http://localhost:4321/
 ┃ Network  use --host to expose
-08:56:33 watching for file changes...
-08:57:06 [200] / 165ms
+10:16:07 watching for file changes...
+
+========================================
+SEO Audit Score for "Thinkific Student Engagement: 20 Proven Ways to Increase Course Completion": 80/100
+----------------------------------------
+- metaTitle: PASSED (15/15)
+- metaDescription: PASSED (15/15)
+- wordCount: PASSED (>1000 words: 1311) (15/15)
+- heroImage: FAILED (0/10)
+- headingStructure: PASSED (15/15)
+- internalLinks: PASSED (10/10)
+- altText: FAILED (Only 0/5 images have alt text) (0/10)
+- canonical: PASSED (10/10)
+========================================
+
+10:16:29 [200] HEAD /blog/thinkific-student-engagement-20-ways/ 307ms
+
+========================================
+SEO Audit Score for "Thinkific Student Engagement: 20 Proven Ways to Increase Course Completion": 80/100
+----------------------------------------
+- metaTitle: PASSED (15/15)
+- metaDescription: PASSED (15/15)
+- wordCount: PASSED (>1000 words: 1311) (15/15)
+- heroImage: FAILED (0/10)
+- headingStructure: PASSED (15/15)
+- internalLinks: PASSED (10/10)
+- altText: FAILED (Only 0/5 images have alt text) (0/10)
+- canonical: PASSED (10/10)
+========================================
+
+10:17:35 [200] /blog/thinkific-student-engagement-20-ways/ 262ms
+10:17:35 [404] /images/blog-placeholder.jpg 25ms
+10:17:36 [200] /_image 727ms
+
+========================================
+SEO Audit Score for "Thinkific Student Engagement: 20 Proven Ways to Increase Course Completion": 80/100
+----------------------------------------
+- metaTitle: PASSED (15/15)
+- metaDescription: PASSED (15/15)
+- wordCount: PASSED (>1000 words: 1311) (15/15)
+- heroImage: FAILED (0/10)
+- headingStructure: PASSED (15/15)
+- internalLinks: PASSED (10/10)
+- altText: FAILED (Only 0/5 images have alt text) (0/10)
+- canonical: PASSED (10/10)
+========================================
+
+10:17:36 [200] /blog/thinkific-student-engagement-20-ways/ 257ms
+10:17:36 [200] /_image 847ms
+10:17:36 [404] /images/blog-placeholder.jpg 1ms
+10:17:36 [200] /_image 354ms
+10:17:37 [200] /_image 282ms
+10:17:37 [200] /_image 309ms
