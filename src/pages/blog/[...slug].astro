@@ -43,10 +43,22 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 });
 
 // 4. Canonical URL Calculation
-const canonicalUrl = `https://theeduassist.com/blog/${post.id}/`;
+const canonicalUrl = `https://test-blog-project.vercel.app/blog/${post.data.slug || post.id}`;
+
+// JSON-LD schema markup
+const jsonLdData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "image": post.data.image,
+  "author": { "@type": "Person", "name": post.data.author },
+  "datePublished": post.data.pubDate.toISOString(),
+  "mainEntityOfPage": canonicalUrl
+});
 
 // 5. Build-Time SEO Score Feature Calculation
-function calculateSeoScore(post, headings) {
+function calculateSeoScore(post, headings, currentWordCount) {
   let score = 0;
   const audit = {};
 
@@ -69,17 +81,17 @@ function calculateSeoScore(post, headings) {
   }
 
   // Factor 3: Word Count Score
-  if (wordCount > 1000) {
+  if (currentWordCount > 1000) {
     score += 15;
-    audit.wordCount = `PASSED (>1000 words: ${wordCount}) (15/15)`;
-  } else if (wordCount > 500) {
+    audit.wordCount = `PASSED (>1000 words: ${currentWordCount}) (15/15)`;
+  } else if (currentWordCount > 500) {
     score += 10;
-    audit.wordCount = `PARTIAL (>500 words: ${wordCount}) (10/15)`;
-  } else if (wordCount > 200) {
+    audit.wordCount = `PARTIAL (>500 words: ${currentWordCount}) (10/15)`;
+  } else if (currentWordCount > 200) {
     score += 5;
-    audit.wordCount = `PARTIAL (>200 words: ${wordCount}) (5/15)`;
+    audit.wordCount = `PARTIAL (>200 words: ${currentWordCount}) (5/15)`;
   } else {
-    audit.wordCount = `FAILED (<200 words: ${wordCount}) (0/15)`;
+    audit.wordCount = `FAILED (<200 words: ${currentWordCount}) (0/15)`;
   }
 
   // Factor 4: Hero Image Availability
@@ -144,7 +156,7 @@ function calculateSeoScore(post, headings) {
   return { score, audit };
 }
 
-const seoResult = calculateSeoScore(post, headings);
+const seoResult = calculateSeoScore(post, headings, wordCount);
 const seoScore = seoResult.score;
 
 console.log(`\n========================================`);
@@ -165,6 +177,7 @@ console.log(`========================================\n`);
   twitterCard={post.data.twitterCard}
   noindex={post.data.noindex}
   hreflang={post.data.hreflang}
+  jsonLd={jsonLdData}
 >
   <article class="bg-white min-h-screen" data-seo-score={seoScore}>
 

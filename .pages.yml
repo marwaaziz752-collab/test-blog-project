@@ -33,21 +33,6 @@ content:
       - name: metaDescription
         label: SEO Meta Description
         type: text
-      - name: focusKeyword
-        label: Focus Keyword
-        type: string
-      - name: ogImage
-        label: Open Graph Image URL
-        type: string
-      - name: twitterCard
-        label: Twitter Card Type
-        type: string
-      - name: noindex
-        label: No Index (hide from search engines)
-        type: boolean
-      - name: hreflang
-        label: Hreflang (e.g. en-us)
-        type: string
       - name: faqs
         label: FAQs
         type: object
@@ -59,21 +44,10 @@ content:
           - name: answer
             label: Answer
             type: text
-      - name: ctaHeading
-        label: CTA Heading
-        type: string
-      - name: ctaText
-        label: CTA Text
-        type: text
-      - name: ctaButtonLabel
-        label: CTA Button Label
-        type: string
-      - name: ctaButtonUrl
-        label: CTA Button URL
-        type: string
       - name: body
         label: Body
         type: rich-text
         options:
-          path: src/assets/blog
-          extensions: [jpg, jpeg, png, webp]
+          image:
+            path: src/assets/blog
+            publicPath: /assets/blog

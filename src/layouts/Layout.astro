@@ -12,6 +12,7 @@ interface Props {
   twitterCard?: string;
   noindex?: boolean;
   hreflang?: string;
+  jsonLd?: string;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   twitterCard,
   noindex,
   hreflang,
+  jsonLd,
 } = Astro.props;
 ---
 
@@ -39,6 +41,7 @@ const {
     {canonical && <link rel="canonical" href={canonical} />}
     {hreflang && <link rel="alternate" hreflang={hreflang} href={canonical} />}
     {focusKeyword && <meta name="focus-keyword" content={focusKeyword} />}
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
