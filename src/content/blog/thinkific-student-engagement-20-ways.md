@@ -117,11 +117,11 @@ A smooth tech stack removes friction for both students and instructors. Connecti
 
 ### **16. Use Storytelling in Lessons**
 
-Facts and instructions are useful, but stories make lessons memorable. When instructors share real examples or case studies, learners connect emotionally with the material. This connection often leads to higher reten
+Facts and instructions are useful, but stories make lessons memorable. When instructors share real examples or case studies, learners connect emotionally with the material. This connection often leads to higher retention and completion.
 
 ![](https://docs.google.com/u/0/docs-images-rt/APuouOcTmjx1hPY_n7ly4cGxDC92bbzFwjYC-EOntpPdgtelczGE52W4jEw-VBLtqMGa6RVyx4B27d2iarGpmvRz8RxIE2U2Ana1YWN2sUCHSqLdtiaFFX3l2poKIfvKDG5vMYnR7cFeMPoB5fS0L5d1SricdapsWyjR4Iii6vPZBrcY=s2048)
 
-tion and completion.
+
 
 ### **17. Offer Peer Accountability Options**
 
