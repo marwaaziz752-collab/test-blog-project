@@ -166,6 +166,36 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
             <Content />
           </div>
 
+          <!-- FAQ Accordion Section -->
+          {post.data.faqs && post.data.faqs.length > 0 && (
+            <div class="border-t border-slate-100 pt-10">
+              <h2 class="text-2xl font-extrabold text-slate-900 mb-6 flex items-center gap-2.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-indigo-600">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                </svg>
+                Frequently Asked Questions
+              </h2>
+              <div class="space-y-4">
+                {post.data.faqs.map((faq) => (
+                  <div class="faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden transition-all duration-300">
+                    <button
+                      type="button"
+                      class="faq-trigger flex items-center justify-between w-full p-4 sm:p-5 font-bold text-slate-950 text-sm sm:text-base hover:bg-slate-100 text-left transition-colors duration-200"
+                    >
+                      <span>{faq.question}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                      </svg>
+                    </button>
+                    <div class="faq-content hidden border-t border-slate-100 p-4 sm:p-5 bg-white text-slate-600 text-sm sm:text-base leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
 
         <!-- Sticky Sidebar Table of Contents (col-span-1) -->
@@ -238,122 +268,27 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     });
   }
 
-  // FAQ Accordion Converter
-  // Find any lists/structures resembling FAQ or convert lists of Question/Answer pairs to interactive accordions
-  const contentBody = document.getElementById('article-content');
-  if (contentBody) {
-    // Look for lists or structured definitions
-    // Let's examine lists. If we have questions/answers inside a list or consecutive elements like paragraphs,
-    // let's transform them into fully interactive, clean FAQ accordions.
-    // Specifically, let's look for paragraphs or headings starting with 'Q:' or 'Question:' or similar structures,
-    // or lists where items have a strong question part or are formatted as Q&A.
-    // Let's write a generic transformer that detects:
-    // - Headings/Paragraphs with "Question" or "Q:" or ending with "?"
-    // - Followed by paragraphs with "Answer" or "A:" or just regular content.
-    // Also, let's support unordered list items containing questions and answers.
-
-    // Better yet: search for consecutive elements.
-    // e.g. H3/H4 that ends with '?' or contains 'FAQ'/'Question', or lists that have Question/Answer.
-    // Since this is a client-side execution, we can query list items or headers and make them accordions!
-    // Let's turn any list item containing '?' or starting with a question format into a collapsable accordion if it has sub-paragraphs,
-    // OR we can parse consecutive paragraphs. Let's do both elegantly!
-
-    // Let's check for list items that have text formatted as "Q: ..." or containing question marks.
-    const listItems = contentBody.querySelectorAll('li');
-    listItems.forEach((li) => {
-      const text = li.textContent || '';
-      // If list item contains both a question and answer or is followed by an answer, or contains a line break/bold part
-      const questionMatch = text.match(/^(Q|Question|How|Why|What|Is|Can|Will)\:?.*?\?/i);
-      if (questionMatch && (text.includes('A:') || text.includes('Answer:') || text.includes('\n') || li.querySelector('ul') || li.querySelector('ol'))) {
-        // Let's convert this li to a collapsible accordion card!
-        // We can split the question and the answer
-        let questionPart = questionMatch[0];
-        let answerPart = text.replace(questionPart, '').replace(/^\s*[:-]\s*(A|Answer)?\s*[:-]?\s*/i, '').trim();
-
-        if (answerPart) {
-          li.innerHTML = `
-            <div class="faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden mb-4 transition-all duration-300">
-              <button type="button" class="faq-trigger flex items-center justify-between w-full p-4 font-bold text-slate-950 text-sm hover:bg-slate-100 text-left transition-colors duration-200">
-                <span>${questionPart}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                </svg>
-              </button>
-              <div class="faq-content hidden border-t border-slate-100 p-4 bg-white text-slate-600 text-sm leading-relaxed">
-                ${answerPart}
-              </div>
-            </div>
-          `;
-          li.style.listStyle = 'none';
-          li.style.paddingLeft = '0';
-        }
-      }
-    });
-
-    // Also let's check consecutive elements in the prose.
-    // If we have an H3 or H4 ending with '?' or starting with 'Question', and the next sibling is a paragraph,
-    // let's wrap them in an accordion!
-    const headers = contentBody.querySelectorAll('h2, h3, h4');
-    headers.forEach((header) => {
-      const text = header.textContent || '';
-      if (text.trim().endsWith('?') || text.toLowerCase().startsWith('question') || text.toLowerCase().startsWith('q:')) {
-        // Find next sibling
-        const nextSib = header.nextElementSibling;
-        if (nextSib && (nextSib.tagName === 'P' || nextSib.tagName === 'UL' || nextSib.tagName === 'OL')) {
-          // We have a Q&A match!
-          const accordionWrapper = document.createElement('div');
-          accordionWrapper.className = 'faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden mb-6 transition-all duration-300';
-
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'faq-trigger flex items-center justify-between w-full p-4 font-bold text-slate-950 text-sm sm:text-base hover:bg-slate-100 text-left transition-colors duration-200';
-          button.innerHTML = `
-            <span>${text}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
-          `;
-
-          const contentDiv = document.createElement('div');
-          contentDiv.className = 'faq-content hidden border-t border-slate-100 p-4 bg-white text-slate-600 text-sm sm:text-base leading-relaxed';
-
-          // Clone the answer elements (could be multiple if we have several consecutive paragraphs, let's just clone the immediate next one for safety)
-          const answerClone = nextSib.cloneNode(true);
-          contentDiv.appendChild(answerClone);
-
-          accordionWrapper.appendChild(button);
-          accordionWrapper.appendChild(contentDiv);
-
-          // Insert accordion before the header and remove original header & next sibling
-          header.parentNode?.insertBefore(accordionWrapper, header);
-          header.parentNode?.removeChild(header);
-          nextSib.parentNode?.removeChild(nextSib);
-        }
-      }
-    });
-
-    // Add click triggers to all created accordions
-    const triggers = contentBody.querySelectorAll('.faq-trigger');
-    triggers.forEach((trigger) => {
-      trigger.addEventListener('click', () => {
-        const item = trigger.closest('.faq-accordion-item');
-        if (item) {
-          const content = item.querySelector('.faq-content');
-          const arrow = item.querySelector('.faq-arrow');
-          if (content && arrow) {
-            const isHidden = content.classList.toggle('hidden');
-            if (isHidden) {
-              arrow.classList.remove('rotate-180');
-              item.classList.remove('ring-1', 'ring-indigo-500/20', 'shadow-md');
-            } else {
-              arrow.classList.add('rotate-180');
-              item.classList.add('ring-1', 'ring-indigo-500/20', 'shadow-md');
-            }
+  // FAQ Accordion Interaction
+  const faqTriggers = document.querySelectorAll('.faq-trigger');
+  faqTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.faq-accordion-item');
+      if (item) {
+        const content = item.querySelector('.faq-content');
+        const arrow = item.querySelector('.faq-arrow');
+        if (content && arrow) {
+          const isHidden = content.classList.toggle('hidden');
+          if (isHidden) {
+            arrow.classList.remove('rotate-180');
+            item.classList.remove('ring-1', 'ring-indigo-500/20', 'shadow-md');
+          } else {
+            arrow.classList.add('rotate-180');
+            item.classList.add('ring-1', 'ring-indigo-500/20', 'shadow-md');
           }
         }
-      });
+      }
     });
-  }
+  });
 </script>
 
 <style is:global>
