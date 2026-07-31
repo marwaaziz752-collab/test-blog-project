@@ -11,6 +11,8 @@ const blogCollection = defineCollection({
     image: z.string().optional().default('/images/blog-placeholder.jpg'),
     tags: z.array(z.string()).default([]),
     description: z.string(),
+    metaTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
   }),
 });
 

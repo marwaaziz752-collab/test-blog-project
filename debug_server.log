@@ -1,0 +1,10 @@
+04:59:25 [vite] connected.
+04:59:28 [types] Generated 1ms
+04:59:28 [vite] connected.
+04:59:29 [content] Syncing content
+04:59:29 [content] Synced content
+ astro  v7.1.6 ready in 4134 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+04:59:29 watching for file changes...
+04:59:48 [200] /debug 103ms

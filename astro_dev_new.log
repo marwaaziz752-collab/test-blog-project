@@ -1,0 +1,19 @@
+05:05:59 [vite] connected.
+05:06:00 [types] Generated 1ms
+05:06:00 [vite] connected.
+05:06:01 [content] Syncing content
+05:06:01 [content] Astro config changed
+05:06:01 [content] Content config changed
+05:06:01 [content] Clearing content store
+05:06:01 [content] Synced content
+05:06:01 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v7.1.6 ready in 3007 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+05:06:01 watching for file changes...
+05:06:26 [200] HEAD / 133ms
+05:07:55 [200] / 7ms
+05:07:55 [200] / 21ms
+05:07:56 [200] /blog 90ms
+05:07:58 [200] /blog/modern-ui-ux-practices 57ms
+05:07:58 [200] /_image 236ms
