@@ -1,0 +1,49 @@
+content:
+  - name: blog
+    label: Blog
+    path: src/content/blog
+    type: collection
+    filename: '{fields.slug}.md'
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: slug
+        label: Slug
+        type: string
+      - name: author
+        label: Author
+        type: string
+      - name: pubDate
+        label: Publication Date
+        type: date
+      - name: image
+        label: Image URL
+        type: string
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+      - name: description
+        label: Description
+        type: text
+      - name: metaTitle
+        label: SEO Meta Title
+        type: string
+      - name: metaDescription
+        label: SEO Meta Description
+        type: text
+      - name: faqs
+        label: FAQs
+        type: object
+        list: true
+        fields:
+          - name: question
+            label: Question
+            type: string
+          - name: answer
+            label: Answer
+            type: text
+      - name: body
+        label: Body
+        type: rich-text
