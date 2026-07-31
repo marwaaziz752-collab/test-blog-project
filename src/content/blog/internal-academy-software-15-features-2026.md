@@ -168,5 +168,3 @@ Take your time, compare a few platforms, and choose one that fits your team's re
 **Authorised By**
 
 Hifza Naeem
-
-  
