@@ -17,7 +17,7 @@ metaDescription: Discover the 15 essential features your internal academy
 focusKeyword: internal academy software
 ogImage: https://images.unsplash.com/photo-1522202176988-66273c2fd55f
 twitterCard: summary_large_image
-noindex: true
+noindex: false
 hreflang: en-us
 ctaHeading: Ready to Transform Your Team's Training?
 ctaText: Explore how TheEduAssist can help you build a modern internal academy
