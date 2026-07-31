@@ -19,15 +19,6 @@ const blogCollection = defineCollection({
         answer: z.string(),
       })
     ).optional(),
-    ctaHeading: z.string().optional(),
-    ctaText: z.string().optional(),
-    ctaButtonLabel: z.string().optional(),
-    ctaButtonUrl: z.string().optional(),
-    focusKeyword: z.string().optional(),
-    ogImage: z.string().optional(),
-    twitterCard: z.string().optional(),
-    noindex: z.boolean().optional(),
-    hreflang: z.string().optional(),
   }),
 });
 
