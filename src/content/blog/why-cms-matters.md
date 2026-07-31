@@ -23,6 +23,8 @@ When you build a portfolio or blog for a client, you might start by hardcoding a
 
 A Git-based CMS integrates directly with your repository. It provides a beautiful, user-friendly editorial interface for content management, while saving changes directly back to your GitHub/GitLab repository as clean Markdown files.
 
+![Pages CMS Interface Demo](/assets/blog/test-image.png)
+
 Benefits of Git-based CMS include:
 
 1. **No Database Required:** Keeps your site static, cheap, and lightning fast.
