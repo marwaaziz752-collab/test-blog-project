@@ -17,6 +17,7 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 
 // 1. Reading Time / Word Count Calculation
+// Base the calculation on the post's word count (assume ~200 words per minute)
 const wordCount = post.body ? post.body.trim().split(/\s+/).length : 0;
 const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 const readingTimeText = `${readingTimeMinutes} min read`;
@@ -25,6 +26,7 @@ const readingTimeText = `${readingTimeMinutes} min read`;
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 // 3. SEO Meta Fields Support
+// Fall back to regular title/description if metaTitle/metaDescription are empty/not provided
 const pageTitle = post.data.metaTitle && post.data.metaTitle.trim() !== ''
   ? post.data.metaTitle
   : `${post.data.title} | AstroSphere Blog`;
@@ -49,11 +51,13 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 
     <!-- Hero Header / Post Cover Area -->
     <header class="relative py-16 sm:py-24 bg-slate-50 border-b border-slate-100 overflow-hidden">
+      <!-- Glow ambient -->
       <div class="absolute -top-32 left-10 h-72 w-72 bg-indigo-50 rounded-full blur-3xl -z-10"></div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative space-y-6">
 
-        
+        <!-- Back Button -->
+        <a
           href="/blog"
           class="inline-flex items-center text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors duration-200"
         >
@@ -63,6 +67,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
           Back to Blog
         </a>
 
+        <!-- Tags -->
         <div class="flex flex-wrap gap-2">
           {post.data.tags.map((tag) => (
             <span class="px-3 py-1 text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100/50 rounded-xl">
@@ -71,12 +76,15 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
           ))}
         </div>
 
+        <!-- Title -->
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
           {post.data.title}
         </h1>
 
+        <!-- Author / Meta Info / Reading Time -->
         <div class="flex flex-wrap items-center gap-4 pt-2">
           <div class="flex items-center gap-3">
+            <!-- Small initial avatar -->
             <div class="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
               {post.data.author.charAt(0)}
             </div>
@@ -88,6 +96,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 
           <span class="hidden sm:inline h-5 w-px bg-slate-300"></span>
 
+          <!-- Reading Time Display -->
           <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-50/80 text-xs sm:text-sm font-bold text-indigo-700">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -99,8 +108,10 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       </div>
     </header>
 
+    <!-- Post Main Content Area (Layout with Sidebar TOC) -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
+      <!-- Mobile Table of Contents Accordion -->
       {tocHeadings.length > 0 && (
         <div class="block lg:hidden mb-8 border border-slate-200 rounded-2xl bg-slate-50/50 overflow-hidden">
           <button
@@ -121,7 +132,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
           <div class="hidden border-t border-slate-200 p-4 bg-white" id="mobile-toc-menu">
             <nav class="space-y-2">
               {tocHeadings.map((heading) => (
-                
+                <a
                   href={`#${heading.slug}`}
                   class={`block text-xs font-semibold hover:text-indigo-600 transition-colors duration-200 ${heading.depth === 3 ? 'pl-4 text-slate-500' : 'text-slate-800'}`}
                 >
@@ -135,8 +146,10 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 items-start">
 
+        <!-- Main Post Body (col-span-3) -->
         <div class="lg:col-span-3 space-y-12">
 
+          <!-- Featured Image using Astro's Optimized <Image /> component (forces WebP format) -->
           <div class="aspect-[16/9] w-full overflow-hidden rounded-3xl bg-slate-100 shadow-md relative">
             <Image
               src={post.data.image}
@@ -148,35 +161,14 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
             />
           </div>
 
+          <!-- Article Body with modern typography and styling -->
           <div class="prose max-w-none" id="article-content">
             <Content />
           </div>
 
-          <!-- FAQ Section (using structured faqs field) -->
-          {post.data.faqs && post.data.faqs.length > 0 && (
-            <div class="space-y-4 pt-8 border-t border-slate-100">
-              <h2 class="text-2xl font-extrabold text-slate-900 mb-4">Frequently Asked Questions</h2>
-              {post.data.faqs.map((faq) => (
-                <div class="faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden">
-                  <button
-                    type="button"
-                    class="faq-trigger flex items-center justify-between w-full p-4 font-bold text-slate-950 text-sm sm:text-base hover:bg-slate-100 text-left transition-colors duration-200"
-                  >
-                    <span>{faq.question}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                    </svg>
-                  </button>
-                  <div class="faq-content hidden border-t border-slate-100 p-4 bg-white text-slate-600 text-sm sm:text-base leading-relaxed">
-                    {faq.answer}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
         </div>
 
+        <!-- Sticky Sidebar Table of Contents (col-span-1) -->
         <aside class="hidden lg:block lg:col-span-1 sticky top-28 space-y-6">
           {tocHeadings.length > 0 && (
             <div class="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm">
@@ -188,7 +180,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
               </h3>
               <nav class="space-y-3 border-l border-slate-100 pl-4">
                 {tocHeadings.map((heading) => (
-                  
+                  <a
                     href={`#${heading.slug}`}
                     class={`block text-xs font-bold transition-all duration-200 hover:text-indigo-600 relative -ml-[17px] pl-4 border-l-2 border-transparent hover:border-indigo-600 ${heading.depth === 3 ? 'pl-8 -ml-[17px] text-slate-500 hover:text-indigo-600 font-semibold' : 'text-slate-800'}`}
                   >
@@ -204,7 +196,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
             <p class="text-slate-600 text-xs leading-relaxed">
               Contact our product team or read other curated articles to supercharge your web layouts!
             </p>
-            
+            <a
               href="/blog"
               class="inline-flex w-full items-center justify-center p-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-100 transition-all duration-200"
             >
@@ -221,6 +213,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 </Layout>
 
 <script>
+  // Mobile TOC Toggle JS Interaction
   const mobileTocToggle = document.getElementById('mobile-toc-toggle');
   const mobileTocMenu = document.getElementById('mobile-toc-menu');
   const mobileTocArrow = document.getElementById('mobile-toc-arrow');
@@ -235,6 +228,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       }
     });
 
+    // Close mobile TOC menu on clickable anchors
     const mobileAnchors = mobileTocMenu.querySelectorAll('a');
     mobileAnchors.forEach(a => {
       a.addEventListener('click', () => {
@@ -244,21 +238,126 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     });
   }
 
-  // FAQ Accordion Click Handler (for structured faqs field)
-  document.querySelectorAll('.faq-trigger').forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const item = trigger.closest('.faq-accordion-item');
-      const content = item?.querySelector('.faq-content');
-      const arrow = item?.querySelector('.faq-arrow');
-      if (content && arrow) {
-        const isHidden = content.classList.toggle('hidden');
-        arrow.classList.toggle('rotate-180', !isHidden);
+  // FAQ Accordion Converter
+  // Find any lists/structures resembling FAQ or convert lists of Question/Answer pairs to interactive accordions
+  const contentBody = document.getElementById('article-content');
+  if (contentBody) {
+    // Look for lists or structured definitions
+    // Let's examine lists. If we have questions/answers inside a list or consecutive elements like paragraphs,
+    // let's transform them into fully interactive, clean FAQ accordions.
+    // Specifically, let's look for paragraphs or headings starting with 'Q:' or 'Question:' or similar structures,
+    // or lists where items have a strong question part or are formatted as Q&A.
+    // Let's write a generic transformer that detects:
+    // - Headings/Paragraphs with "Question" or "Q:" or ending with "?"
+    // - Followed by paragraphs with "Answer" or "A:" or just regular content.
+    // Also, let's support unordered list items containing questions and answers.
+
+    // Better yet: search for consecutive elements.
+    // e.g. H3/H4 that ends with '?' or contains 'FAQ'/'Question', or lists that have Question/Answer.
+    // Since this is a client-side execution, we can query list items or headers and make them accordions!
+    // Let's turn any list item containing '?' or starting with a question format into a collapsable accordion if it has sub-paragraphs,
+    // OR we can parse consecutive paragraphs. Let's do both elegantly!
+
+    // Let's check for list items that have text formatted as "Q: ..." or containing question marks.
+    const listItems = contentBody.querySelectorAll('li');
+    listItems.forEach((li) => {
+      const text = li.textContent || '';
+      // If list item contains both a question and answer or is followed by an answer, or contains a line break/bold part
+      const questionMatch = text.match(/^(Q|Question|How|Why|What|Is|Can|Will)\:?.*?\?/i);
+      if (questionMatch && (text.includes('A:') || text.includes('Answer:') || text.includes('\n') || li.querySelector('ul') || li.querySelector('ol'))) {
+        // Let's convert this li to a collapsible accordion card!
+        // We can split the question and the answer
+        let questionPart = questionMatch[0];
+        let answerPart = text.replace(questionPart, '').replace(/^\s*[:-]\s*(A|Answer)?\s*[:-]?\s*/i, '').trim();
+
+        if (answerPart) {
+          li.innerHTML = `
+            <div class="faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden mb-4 transition-all duration-300">
+              <button type="button" class="faq-trigger flex items-center justify-between w-full p-4 font-bold text-slate-950 text-sm hover:bg-slate-100 text-left transition-colors duration-200">
+                <span>${questionPart}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
+              </button>
+              <div class="faq-content hidden border-t border-slate-100 p-4 bg-white text-slate-600 text-sm leading-relaxed">
+                ${answerPart}
+              </div>
+            </div>
+          `;
+          li.style.listStyle = 'none';
+          li.style.paddingLeft = '0';
+        }
       }
     });
-  });
+
+    // Also let's check consecutive elements in the prose.
+    // If we have an H3 or H4 ending with '?' or starting with 'Question', and the next sibling is a paragraph,
+    // let's wrap them in an accordion!
+    const headers = contentBody.querySelectorAll('h2, h3, h4');
+    headers.forEach((header) => {
+      const text = header.textContent || '';
+      if (text.trim().endsWith('?') || text.toLowerCase().startsWith('question') || text.toLowerCase().startsWith('q:')) {
+        // Find next sibling
+        const nextSib = header.nextElementSibling;
+        if (nextSib && (nextSib.tagName === 'P' || nextSib.tagName === 'UL' || nextSib.tagName === 'OL')) {
+          // We have a Q&A match!
+          const accordionWrapper = document.createElement('div');
+          accordionWrapper.className = 'faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden mb-6 transition-all duration-300';
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'faq-trigger flex items-center justify-between w-full p-4 font-bold text-slate-950 text-sm sm:text-base hover:bg-slate-100 text-left transition-colors duration-200';
+          button.innerHTML = `
+            <span>${text}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          `;
+
+          const contentDiv = document.createElement('div');
+          contentDiv.className = 'faq-content hidden border-t border-slate-100 p-4 bg-white text-slate-600 text-sm sm:text-base leading-relaxed';
+
+          // Clone the answer elements (could be multiple if we have several consecutive paragraphs, let's just clone the immediate next one for safety)
+          const answerClone = nextSib.cloneNode(true);
+          contentDiv.appendChild(answerClone);
+
+          accordionWrapper.appendChild(button);
+          accordionWrapper.appendChild(contentDiv);
+
+          // Insert accordion before the header and remove original header & next sibling
+          header.parentNode?.insertBefore(accordionWrapper, header);
+          header.parentNode?.removeChild(header);
+          nextSib.parentNode?.removeChild(nextSib);
+        }
+      }
+    });
+
+    // Add click triggers to all created accordions
+    const triggers = contentBody.querySelectorAll('.faq-trigger');
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-accordion-item');
+        if (item) {
+          const content = item.querySelector('.faq-content');
+          const arrow = item.querySelector('.faq-arrow');
+          if (content && arrow) {
+            const isHidden = content.classList.toggle('hidden');
+            if (isHidden) {
+              arrow.classList.remove('rotate-180');
+              item.classList.remove('ring-1', 'ring-indigo-500/20', 'shadow-md');
+            } else {
+              arrow.classList.add('rotate-180');
+              item.classList.add('ring-1', 'ring-indigo-500/20', 'shadow-md');
+            }
+          }
+        }
+      });
+    });
+  }
 </script>
 
 <style is:global>
+  /* Standard modern prose layout adjustments since we're using raw Tailwind CSS */
   .prose {
     color: var(--color-slate-700);
     line-height: 1.8;
@@ -322,6 +421,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     padding: 0;
     font-weight: normal;
   }
+  /* Remove list style bullet decoration if there are nested accordions inside list items */
   .prose li .faq-accordion-item {
     margin-left: 0 !important;
   }
