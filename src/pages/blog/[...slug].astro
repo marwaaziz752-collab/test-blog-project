@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
+import BlogCTA from '../../components/BlogCTA.astro';
 
 // Generate dynamic paths for all blog posts
 export async function getStaticPaths() {
@@ -41,13 +42,127 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
+
+// 4. Canonical URL Calculation
+const canonicalUrl = `https://theeduassist.com/blog/${post.id}/`;
+
+// 5. Build-Time SEO Score Feature Calculation
+function calculateSeoScore(post, headings) {
+  let score = 0;
+  const audit = {};
+
+  // Factor 1: Custom SEO Meta Title
+  const hasMetaTitle = post.data.metaTitle && post.data.metaTitle.trim().length > 0;
+  if (hasMetaTitle) {
+    score += 15;
+    audit.metaTitle = "PASSED (15/15)";
+  } else {
+    audit.metaTitle = "FAILED (0/15)";
+  }
+
+  // Factor 2: Custom SEO Meta Description
+  const hasMetaDesc = post.data.metaDescription && post.data.metaDescription.trim().length > 0;
+  if (hasMetaDesc) {
+    score += 15;
+    audit.metaDescription = "PASSED (15/15)";
+  } else {
+    audit.metaDescription = "FAILED (0/15)";
+  }
+
+  // Factor 3: Word Count Score
+  if (wordCount > 1000) {
+    score += 15;
+    audit.wordCount = `PASSED (>1000 words: ${wordCount}) (15/15)`;
+  } else if (wordCount > 500) {
+    score += 10;
+    audit.wordCount = `PARTIAL (>500 words: ${wordCount}) (10/15)`;
+  } else if (wordCount > 200) {
+    score += 5;
+    audit.wordCount = `PARTIAL (>200 words: ${wordCount}) (5/15)`;
+  } else {
+    audit.wordCount = `FAILED (<200 words: ${wordCount}) (0/15)`;
+  }
+
+  // Factor 4: Hero Image Availability
+  const hasHeroImage = post.data.image && post.data.image !== '/images/blog-placeholder.jpg';
+  if (hasHeroImage) {
+    score += 10;
+    audit.heroImage = "PASSED (10/10)";
+  } else {
+    audit.heroImage = "FAILED (0/10)";
+  }
+
+  // Factor 5: Proper Heading Structure (at least one H2 and no depth skips of >1)
+  const hasH2 = headings.some(h => h.depth === 2);
+  let headingJump = false;
+  for (let i = 1; i < headings.length; i++) {
+    if (headings[i].depth - headings[i - 1].depth > 1) {
+      headingJump = true;
+    }
+  }
+  if (headings.length > 0 && hasH2 && !headingJump) {
+    score += 15;
+    audit.headingStructure = "PASSED (15/15)";
+  } else if (headings.length > 0) {
+    score += 10;
+    audit.headingStructure = "PARTIAL (Has headings but missing H2 or contains depth jumps) (10/15)";
+  } else {
+    audit.headingStructure = "FAILED (No headings) (0/15)";
+  }
+
+  // Factor 6: Internal Links Presence (links containing domain or relative paths)
+  const bodyText = post.body || "";
+  const hasInternalLinks = bodyText.includes("theeduassist.com") || bodyText.includes("]((/") || bodyText.includes("](//") || bodyText.includes("](/blog");
+  if (hasInternalLinks) {
+    score += 10;
+    audit.internalLinks = "PASSED (10/10)";
+  } else {
+    audit.internalLinks = "FAILED (0/10)";
+  }
+
+  // Factor 7: Image Alt Text Completeness (deduct if any image lacks alt text)
+  const imgRegex = /!\[(.*?)\]\((.*?)\)/g;
+  let match;
+  let totalImages = 0;
+  let imagesWithAlt = 0;
+  while ((match = imgRegex.exec(bodyText)) !== null) {
+    totalImages++;
+    if (match[1] && match[1].trim().length > 0) {
+      imagesWithAlt++;
+    }
+  }
+  if (totalImages === 0 || totalImages === imagesWithAlt) {
+    score += 10;
+    audit.altText = `PASSED (${imagesWithAlt}/${totalImages} images have alt text) (10/10)`;
+  } else {
+    audit.altText = `FAILED (Only ${imagesWithAlt}/${totalImages} images have alt text) (0/10)`;
+  }
+
+  // Factor 8: Canonical URL Availability (always generated for layout)
+  score += 10;
+  audit.canonical = "PASSED (10/10)";
+
+  return { score, audit };
+}
+
+const seoResult = calculateSeoScore(post, headings);
+const seoScore = seoResult.score;
+
+console.log(`\n========================================`);
+console.log(`SEO Audit Score for "${post.data.title}": ${seoScore}/100`);
+console.log(`----------------------------------------`);
+for (const [key, val] of Object.entries(seoResult.audit)) {
+  console.log(`- ${key}: ${val}`);
+}
+console.log(`========================================\n`);
 ---
 
 <Layout
   title={pageTitle}
   description={pageDescription}
+  canonical={canonicalUrl}
 >
-  <article class="bg-white min-h-screen">
+  <article class="bg-white min-h-screen" data-seo-score={seoScore}>
 
     <!-- Hero Header / Post Cover Area -->
     <header class="relative py-16 sm:py-24 bg-slate-50 border-b border-slate-100 overflow-hidden">
@@ -166,34 +281,9 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
             <Content />
           </div>
 
-          <!-- FAQ Accordion Section -->
-          {post.data.faqs && post.data.faqs.length > 0 && (
-            <div class="border-t border-slate-100 pt-10">
-              <h2 class="text-2xl font-extrabold text-slate-900 mb-6 flex items-center gap-2.5">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-indigo-600">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
-                </svg>
-                Frequently Asked Questions
-              </h2>
-              <div class="space-y-4">
-                {post.data.faqs.map((faq) => (
-                  <div class="faq-accordion-item border border-slate-200 rounded-2xl bg-slate-50/30 overflow-hidden transition-all duration-300">
-                    <button
-                      type="button"
-                      class="faq-trigger flex items-center justify-between w-full p-4 sm:p-5 font-bold text-slate-950 text-sm sm:text-base hover:bg-slate-100 text-left transition-colors duration-200"
-                    >
-                      <span>{faq.question}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0 ml-4 transition-transform duration-300 faq-arrow">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                      </svg>
-                    </button>
-                    <div class="faq-content hidden border-t border-slate-100 p-4 sm:p-5 bg-white text-slate-600 text-sm sm:text-base leading-relaxed">
-                      {faq.answer}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <!-- Reusable CTA Section -->
+          {post.data.cta !== false && (
+            <BlogCTA />
           )}
 
         </div>
@@ -267,28 +357,6 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       });
     });
   }
-
-  // FAQ Accordion Interaction
-  const faqTriggers = document.querySelectorAll('.faq-trigger');
-  faqTriggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const item = trigger.closest('.faq-accordion-item');
-      if (item) {
-        const content = item.querySelector('.faq-content');
-        const arrow = item.querySelector('.faq-arrow');
-        if (content && arrow) {
-          const isHidden = content.classList.toggle('hidden');
-          if (isHidden) {
-            arrow.classList.remove('rotate-180');
-            item.classList.remove('ring-1', 'ring-indigo-500/20', 'shadow-md');
-          } else {
-            arrow.classList.add('rotate-180');
-            item.classList.add('ring-1', 'ring-indigo-500/20', 'shadow-md');
-          }
-        }
-      }
-    });
-  });
 </script>
 
 <style is:global>
@@ -355,9 +423,5 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     color: inherit;
     padding: 0;
     font-weight: normal;
-  }
-  /* Remove list style bullet decoration if there are nested accordions inside list items */
-  .prose li .faq-accordion-item {
-    margin-left: 0 !important;
   }
 </style>

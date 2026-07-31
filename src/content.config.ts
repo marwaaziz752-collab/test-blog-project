@@ -13,12 +13,7 @@ const blogCollection = defineCollection({
     description: z.string(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
-    faqs: z.array(
-      z.object({
-        question: z.string(),
-        answer: z.string(),
-      })
-    ).optional(),
+    cta: z.boolean().optional().default(true),
   }),
 });
 
