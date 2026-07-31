@@ -14,6 +14,15 @@ metaTitle: 20 Proven Ways to Increase Thinkific Student Engagement
 metaDescription: Discover 20 proven strategies to boost student engagement and
   course completion rates on Thinkific, from onboarding design to peer
   accountability.
+ctaHeading: "Ready to Accelerate Your Thinkific Growth?"
+ctaText: "Get customized support and consulting from TheEduAssist."
+ctaButtonLabel: "Contact Our Team"
+ctaButtonUrl: "https://theeduassist.com/contact"
+focusKeyword: "thinkific student engagement"
+ogImage: "https://theeduassist.com/images/thinkific-custom-og.jpg"
+twitterCard: "summary_large_image"
+noindex: true
+hreflang: "en-US"
 faqs:
   - question: What is the best Thinkific alternative for boosting student course
       completion rates?
