@@ -1,13 +1,9 @@
-media:
-  input: src/assets/blog
-  output: /assets/blog
-
 content:
   - name: blog
-    label: Blog Posts
-    type: collection
+    label: Blog
     path: src/content/blog
-    format: yaml-frontmatter
+    type: collection
+    filename: '{fields.slug}.md'
     fields:
       - name: title
         label: Title
@@ -22,25 +18,36 @@ content:
         label: Publication Date
         type: date
       - name: image
-        label: Featured Image
+        label: Image URL
         type: string
       - name: tags
         label: Tags
-        type: select
+        type: string
         list: true
       - name: description
         label: Description
         type: text
       - name: metaTitle
-        label: Meta Title (SEO)
+        label: SEO Meta Title
         type: string
       - name: metaDescription
-        label: Meta Description (SEO)
+        label: SEO Meta Description
         type: text
+      - name: faqs
+        label: FAQs
+        type: object
+        list: true
+        fields:
+          - name: question
+            label: Question
+            type: string
+          - name: answer
+            label: Answer
+            type: text
       - name: body
         label: Body
         type: rich-text
         options:
           image:
-            storage: src/assets/blog
-            public: /assets/blog
+            path: src/assets/blog
+            publicPath: /assets/blog
